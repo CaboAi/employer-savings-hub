@@ -136,9 +136,9 @@
 
     // POST to Google Sheets Apps Script webhook
     // Paste your Web App URL from Apps Script deploy here:
-    var webhookUrl = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+    var webhookUrl = 'https://script.google.com/a/macros/mariointegrates.co/s/AKfycbzkiyuhk5SlvigWW1DcEvEv5J6V4N1q5vY23pcGDVfJo9vlN5w7Lvbt7-lS0LuG8_U0mw/exec';
 
-    if (webhookUrl && webhookUrl !== 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') {
+    if (webhookUrl) {
       try {
         await fetch(webhookUrl, {
           method: 'POST',
