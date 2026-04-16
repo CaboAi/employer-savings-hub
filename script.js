@@ -136,7 +136,7 @@
 
     // POST to Google Sheets via hidden form submission.
     // Native form POSTs bypass CORS entirely — no preflight, no redirect issues.
-    var webhookUrl = 'https://script.google.com/a/macros/mariointegrates.co/s/AKfycbzkiyuhk5SlvigWW1DcEvEv5J6V4N1q5vY23pcGDVfJo9vlN5w7Lvbt7-lS0LuG8_U0mw/exec';
+    var webhookUrl = 'https://script.google.com/macros/s/AKfycbxO1f_PYB0-NA8fd9UTi-NxfuQGVkpZjgzax-DoAODEspaLsa78FreHkFORF07QSbe7/exec';
 
     var iframe = document.createElement('iframe');
     iframe.name = 'esh_post';
