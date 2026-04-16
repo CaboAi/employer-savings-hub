@@ -140,8 +140,13 @@
 
     if (webhookUrl) {
       try {
+        // mode: 'no-cors' bypasses CORS preflight — Apps Script
+        // redirects (302) on POST which triggers CORS errors otherwise.
+        // Response is opaque but the data still reaches the script.
         await fetch(webhookUrl, {
           method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
           body: JSON.stringify(formData)
         });
       } catch (err) {
