@@ -134,17 +134,18 @@
       // Hashing failure is non-blocking — Lead event still fires on thank-you page
     }
 
-    // POST to webhook if configured
-    var webhookUrl = ''; // Replace with your webhook URL
-    if (webhookUrl) {
+    // POST to Google Sheets Apps Script webhook
+    // Paste your Web App URL from Apps Script deploy here:
+    var webhookUrl = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+
+    if (webhookUrl && webhookUrl !== 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') {
       try {
         await fetch(webhookUrl, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData)
         });
       } catch (err) {
-        // Webhook failure is non-blocking
+        // Webhook failure is non-blocking — redirect anyway
       }
     }
 
