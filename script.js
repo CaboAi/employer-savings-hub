@@ -134,27 +134,35 @@
       // Hashing failure is non-blocking — Lead event still fires on thank-you page
     }
 
-    // POST to Google Sheets Apps Script webhook
-    // Paste your Web App URL from Apps Script deploy here:
+    // POST to Google Sheets via hidden form submission.
+    // Native form POSTs bypass CORS entirely — no preflight, no redirect issues.
     var webhookUrl = 'https://script.google.com/a/macros/mariointegrates.co/s/AKfycbzkiyuhk5SlvigWW1DcEvEv5J6V4N1q5vY23pcGDVfJo9vlN5w7Lvbt7-lS0LuG8_U0mw/exec';
 
-    if (webhookUrl) {
-      try {
-        // mode: 'no-cors' bypasses CORS preflight — Apps Script
-        // redirects (302) on POST which triggers CORS errors otherwise.
-        // Response is opaque but the data still reaches the script.
-        await fetch(webhookUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify(formData)
-        });
-      } catch (err) {
-        // Webhook failure is non-blocking — redirect anyway
-      }
-    }
+    var iframe = document.createElement('iframe');
+    iframe.name = 'esh_post';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
 
-    // Redirect to thank-you page (Lead pixel fires there)
-    window.location.href = 'thank-you.html';
+    var hiddenForm = document.createElement('form');
+    hiddenForm.method = 'POST';
+    hiddenForm.action = webhookUrl;
+    hiddenForm.target = 'esh_post';
+    hiddenForm.style.display = 'none';
+
+    Object.keys(formData).forEach(function (key) {
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = formData[key];
+      hiddenForm.appendChild(input);
+    });
+
+    document.body.appendChild(hiddenForm);
+    hiddenForm.submit();
+
+    // Brief delay to let the POST dispatch before navigating away
+    setTimeout(function () {
+      window.location.href = 'thank-you.html';
+    }, 400);
   });
 })();

@@ -4,21 +4,16 @@
  * Deploy as: Google Apps Script Web App
  * Sheet columns: Timestamp | First Name | Last Name | Email | Phone | Employee Count | Industry | Event ID | Page URL
  *
- * Setup:
- * 1. Create a new Google Sheet (name it "Employer Savings Hub Leads")
- * 2. In the Sheet, go to Extensions > Apps Script
- * 3. Delete any existing code and paste this entire file
- * 4. Click Deploy > New deployment
- * 5. Type: Web app
- * 6. Execute as: Me
- * 7. Who has access: Anyone
- * 8. Click Deploy and copy the Web App URL
- * 9. Paste that URL into script.js where it says webhookUrl = ''
+ * IMPORTANT: After pasting this code, you must re-deploy:
+ *   Deploy > Manage deployments > Edit (pencil icon) > Version: New version > Deploy
+ *   (A new deployment URL is NOT needed — just update the existing one)
  */
 
 function doPost(e) {
   try {
-    var data = JSON.parse(e.postData.contents);
+    // Form submissions arrive as e.parameter (key-value pairs),
+    // not as JSON in e.postData.contents
+    var data = e.parameter;
 
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
@@ -35,7 +30,6 @@ function doPost(e) {
         'Event ID',
         'Page URL'
       ]);
-      // Bold the header row
       sheet.getRange(1, 1, 1, 9).setFontWeight('bold');
     }
 
@@ -62,7 +56,6 @@ function doPost(e) {
   }
 }
 
-// Required for CORS preflight from browsers
 function doGet(e) {
   return ContentService
     .createTextOutput(JSON.stringify({ status: 'ok', message: 'Employer Savings Hub webhook is live.' }))
