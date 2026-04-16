@@ -7,7 +7,7 @@
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 
   <!-- Meta Pixel Code -->
@@ -35,7 +35,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(170deg, var(--slate-50) 0%, var(--white) 50%, var(--blue-50) 100%);
+      background: var(--white);
       text-align: center;
       padding: 40px 24px;
     }
@@ -43,11 +43,11 @@
       max-width: 540px;
     }
     .thankyou-icon {
-      width: 72px;
-      height: 72px;
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
-      background: var(--green-50);
-      color: var(--green-600);
+      background: var(--accent-surface);
+      color: var(--accent);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -58,19 +58,19 @@
       margin-bottom: 16px;
     }
     .thankyou p {
-      font-size: 1.0625rem;
-      color: var(--navy-600);
+      font-size: 1rem;
+      color: var(--body);
       line-height: 1.7;
       margin-bottom: 12px;
     }
     .thankyou .contact-line {
-      font-size: 0.9375rem;
-      color: var(--slate-500);
+      font-size: 0.875rem;
+      color: var(--muted);
       margin-top: 32px;
     }
     .thankyou .contact-line a {
-      color: var(--blue-600);
-      font-weight: 600;
+      color: var(--accent);
+      font-weight: 500;
     }
   </style>
 </head>
@@ -79,7 +79,7 @@
   <!-- Header -->
   <header class="site-header">
     <div class="container header-inner">
-      <a href="/" class="logo">Employer<span>Savings</span>Hub</a>
+      <a href="/" class="logo">employer<span>savings</span>hub</a>
     </div>
   </header>
 
@@ -97,20 +97,20 @@
     </div>
   </div>
 
-  <!-- Fire Lead event on thank-you page as backup (with stored event_id for dedup) -->
+  <!-- Fire Lead event — this is the primary pixel fire, not a backup -->
   <script>
     (function () {
-      try {
-        var capiData = sessionStorage.getItem('esh_capi_data');
-        if (capiData) {
-          var data = JSON.parse(capiData);
-          if (typeof fbq === 'function' && data.event_id) {
-            fbq('track', 'Lead', {
-              content_name: 'Employer Savings Hub Thank You'
-            }, { eventID: data.event_id });
-          }
-        }
-      } catch (e) {}
+      if (typeof fbq !== 'function') return;
+
+      var eventId = sessionStorage.getItem('esh_event_id');
+      var opts = eventId ? { eventID: eventId } : {};
+
+      fbq('track', 'Lead', {
+        content_name: 'Employer Savings Hub Lead'
+      }, opts);
+
+      // Clean up so a page refresh doesn't double-fire with the same event_id
+      sessionStorage.removeItem('esh_event_id');
     })();
   </script>
 </body>

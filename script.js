@@ -115,18 +115,12 @@
       pageUrl: window.location.href
     };
 
-    // Fire Meta Pixel Lead event with event_id for CAPI dedup
-    if (typeof fbq === 'function') {
-      var pixelData = {
-        content_name: 'Employer Savings Hub Lead Form',
-        content_category: industry,
-        value: 0,
-        currency: 'USD'
-      };
-      fbq('track', 'Lead', pixelData, { eventID: eventId });
-    }
+    // Store event ID and form data for the thank-you page to fire Lead event
+    // (firing Lead here risks being killed by the redirect before the HTTP request completes)
+    sessionStorage.setItem('esh_event_id', eventId);
+    sessionStorage.setItem('esh_lead', JSON.stringify(formData));
 
-    // Prepare hashed user data for CAPI (available on thank-you page or via webhook)
+    // Prepare hashed user data for CAPI
     try {
       var hashedData = {
         em: await sha256(email),
@@ -135,34 +129,26 @@
         ln: await sha256(lastName),
         event_id: eventId
       };
-      // Store for CAPI server-side pickup
       sessionStorage.setItem('esh_capi_data', JSON.stringify(hashedData));
     } catch (err) {
-      // Hashing failure is non-blocking
+      // Hashing failure is non-blocking — Lead event still fires on thank-you page
     }
 
-    // Submit form data
-    // Option A: POST to a webhook (Make.com, n8n, Netlify Function, etc.)
-    // Option B: Netlify Forms (add netlify attribute to <form>)
-    // For now, store in sessionStorage and redirect to thank-you page
-    try {
-      sessionStorage.setItem('esh_lead', JSON.stringify(formData));
-
-      // If a webhook URL is configured, POST there too
-      var webhookUrl = ''; // Replace with your webhook URL
-      if (webhookUrl) {
+    // POST to webhook if configured
+    var webhookUrl = ''; // Replace with your webhook URL
+    if (webhookUrl) {
+      try {
         await fetch(webhookUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData)
         });
+      } catch (err) {
+        // Webhook failure is non-blocking
       }
-
-      // Redirect to thank-you page
-      window.location.href = 'thank-you.html';
-    } catch (err) {
-      // If webhook fails, still redirect — data is in sessionStorage
-      window.location.href = 'thank-you.html';
     }
+
+    // Redirect to thank-you page (Lead pixel fires there)
+    window.location.href = 'thank-you.html';
   });
 })();
