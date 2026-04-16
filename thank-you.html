@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You — Employer Savings Hub</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1531502351837432');
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1531502351837432&ev=PageView&noscript=1" />
+  </noscript>
+  <!-- End Meta Pixel Code -->
+
+  <style>
+    .thankyou {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(170deg, var(--slate-50) 0%, var(--white) 50%, var(--blue-50) 100%);
+      text-align: center;
+      padding: 40px 24px;
+    }
+    .thankyou-inner {
+      max-width: 540px;
+    }
+    .thankyou-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--green-50);
+      color: var(--green-600);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .thankyou h1 {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+    .thankyou p {
+      font-size: 1.0625rem;
+      color: var(--navy-600);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .thankyou .contact-line {
+      font-size: 0.9375rem;
+      color: var(--slate-500);
+      margin-top: 32px;
+    }
+    .thankyou .contact-line a {
+      color: var(--blue-600);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo">Employer<span>Savings</span>Hub</a>
+    </div>
+  </header>
+
+  <div class="thankyou">
+    <div class="thankyou-inner">
+      <div class="thankyou-icon">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h1>You're In. We'll Be in Touch.</h1>
+      <p>Thank you for your interest in the Wellness 125 plan. A benefits specialist will review your information and reach out within <strong>1 business day</strong> to discuss your potential savings.</p>
+      <p>In the meantime, keep an eye on your inbox for a confirmation email with more details about the plan.</p>
+      <div class="contact-line">
+        <p>Questions? Call us at <a href="tel:8444557366">844-455-7366</a> or email <a href="mailto:info@acasolutionshub.com">info@acasolutionshub.com</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fire Lead event on thank-you page as backup (with stored event_id for dedup) -->
+  <script>
+    (function () {
+      try {
+        var capiData = sessionStorage.getItem('esh_capi_data');
+        if (capiData) {
+          var data = JSON.parse(capiData);
+          if (typeof fbq === 'function' && data.event_id) {
+            fbq('track', 'Lead', {
+              content_name: 'Employer Savings Hub Thank You'
+            }, { eventID: data.event_id });
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
+</body>
+</html>
